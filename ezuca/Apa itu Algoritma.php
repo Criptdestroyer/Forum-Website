@@ -33,12 +33,13 @@
                   <?php $i = $i+1;} ?>
             <div class="col-md-12 col-lg-12">
               <form class="" action="proses-jawaban.php" method="post">
+                    <input type="hidden" name="id_cur" value="<?= $id ?>">
                 <h4>Question</h4>
                 <div class="row">
 
                 <?php
                       $j = 1;
-                      $sql3 = $db->query("select * from soal");
+                      $sql3 = $db->query("select * from soal where materi_id in(select id_materi from materi where curriculum_id = $id)");
                       while($value3 = $sql3->fetch(PDO::FETCH_ASSOC)){
                     ?>
 
@@ -48,7 +49,7 @@
                     <?= $value3['soal']; ?>
                     <!-- <div class="row"> -->
                       <?php
-                        $ids = $value3['id_soal']; 
+                          $ids = $value3['id_soal']; 
                           $sql4 = $db->query("select * from jawaban where id_soal = $ids");
                           while($value4 = $sql4->fetch(PDO::FETCH_ASSOC)){
                       ?>
@@ -76,6 +77,15 @@
     <script type='text/javascript' src='js/masonry.pkgd.min.js'></script>
     <script type='text/javascript' src='js/jquery.collapsible.min.js'></script>
     <script type='text/javascript' src='js/custom.js'></script>
+    <?php
+            if(isset($_GET['status'])){
+                if($_GET['status']=="sukses"){
+                    echo "<script>alert('Selamat Anda Berhasil Untuk Curriculum ini')</script>";
+                }else{
+                    echo "<script>alert('Mohon Maaf coba lagi')</script>";
+                }
 
+            }
+        ?>
 </body>
 </html>
